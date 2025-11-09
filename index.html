@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARO</title>
+    <!-- Load Retro Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tva: {
+                            brown: '#3b2a1e',
+                            orange: '#d6844b',
+                            gold: '#cba471',
+                            dark: '#1a1512',
+                            cream: '#e8dcc4'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['"Space Mono"', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 10px rgba(214, 132, 75, 0.5), 0 0 20px rgba(214, 132, 75, 0.3);
+            }
+            .border-glow {
+                box-shadow: 0 0 15px rgba(214, 132, 75, 0.2);
+            }
+        }
+
+        body {
+            background-color: #1a1512;
+            color: #cba471;
+        }
+
+        /* CRT Screen Effect */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Flickering Animation */
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.9; }
+            10% { opacity: 0.95; }
+            15% { opacity: 0.99; }
+            20% { opacity: 0.92; }
+            25% { opacity: 0.98; }
+            30% { opacity: 0.94; }
+            35% { opacity: 0.99; }
+            40% { opacity: 0.96; }
+            100% { opacity: 0.98; }
+        }
+        .flicker {
+            animation: flicker 5s infinite;
+        }
+
+        /* Masonry Grid for varying aspect ratios */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
+        }
+        @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            /* Ensure no fixed height constraints */
+            height: auto;
+        }
+    </style>
+</head>
+<body class="font-mono crt min-h-screen overflow-x-hidden flicker">
+    <!-- Background texture -->
+    <div class="fixed inset-0 opacity-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%270 0 200 200%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noiseFilter%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.65%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url%28%23noiseFilter%29%27/%3E%3C/svg%3E');"></div>
+
+    <!-- Miss Minutes / TVA Badge -->
+    <div class="fixed bottom-4 right-4 z-50">
+        <div class="w-20 h-20 bg-tva-orange/20 rounded-full border-2 border-tva-orange flex items-center justify-center animate-pulse text-glow">
+            <span class="text-3xl">⏱</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-tva-dark/90 border-b-4 border-tva-orange backdrop-blur-sm">
+        <nav class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-tva-orange tracking-widest text-glow">
+                SPARO /// TEMPORAL ARCHIVE
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm tracking-wider">
+                 <a href="#data-stream" class="hover:text-tva-orange transition-colors uppercase">[ Data Stream ]</a>
+                 <a href="#records" class="hover:text-tva-orange transition-colors uppercase">[ Visual Records ]</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section class="py-20 px-4 text-center border-b-2 border-tva-brown">
+            <h1 class="text-4xl md:text-6xl font-bold text-tva-orange mb-6 tracking-widest uppercase text-glow" id="typing-title">
+                <!-- Text inserted by JS -->
+            </h1>
+            <p class="text-xl text-tva-gold/80 max-w-2xl mx-auto border-l-2 border-tva-orange pl-4 italic">
+                "Stay curious.Stay Bold.Stay with SPARO"
+            </p>
+        </section>
+
+        <!-- External Link Variant -->
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <a href="https://www.youtube.com/@NexusAnimation-14" target="_blank" 
+               class="group block w-full max-w-2xl mx-auto bg-gradient-to-r from-tva-brown/30 to-tva-orange/10 border-2 border-tva-orange p-6 text-center hover:bg-tva-orange/20 transition-all duration-300 border-glow">
+                <h2 class="text-2xl font-bold text-tva-cream group-hover:text-glow uppercase tracking-widest mb-2">
+                    /// ACCESS NEXUS ANIMATION TIMELINE ///
+                </h2>
+                <p class="text-tva-gold text-sm">Click to initialize inter-dimensional transport protocol</p>
+            </a>
+        </div>
+
+        <!-- Streaming Data Section (Masonry Grid) -->
+        <section id="data-stream" class="py-16 bg-black/30 border-y-4 border-tva-brown">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex items-center mb-12">
+                    <span class="text-tva-orange text-3xl mr-4">⚡</span>
+                    <h2 class="text-3xl font-bold text-tva-orange uppercase tracking-widest text-glow">
+                        LATEST TEMPORAL DATA
+                    </h2>
+                    <div class="h-px bg-tva-orange flex-grow ml-8 opacity-50"></div>
+                </div>
+
+                <!-- Masonry Grid Container -->
+                <div class="masonry-grid" id="video-feed">
+                    <!-- JS will inject items here -->
+                     <div class="col-span-full text-center py-12 text-tva-orange animate-pulse">
+                        INITIALIZING DATA STREAM...
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Records -->
+        <section id="records" class="py-16 max-w-7xl mx-auto px-4">
+             <div class="flex items-center mb-12">
+                <h2 class="text-3xl font-bold text-tva-gold uppercase tracking-widest">
+                    PENDING TIMELINE EVENTS
+                </h2>
+                <div class="h-px bg-tva-gold flex-grow ml-8 opacity-50"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="upcoming-feed">
+                <!-- JS Injects here -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-tva-brown/20 border-t-4 border-tva-orange py-8 text-center mt-20">
+        <p class="text-tva-gold/60 text-sm uppercase tracking-widest">
+            SPARO RECORDS DIVISION © 2025
+        </p>
+        <p class="text-xs mt-2 text-tva-orange/40">
+             VARIANT DETECTED: EARTH-616
+        </p>
+    </footer>
+
+    <script>
+        // --- CONFIGURATION ---
+
+        // 1. LATEST VIDEOS LIST
+        // To Add New Videos: Just paste the full YouTube URL into this array.
+        // You can now paste 'shorts' URLs too.
+        const videoUrls = [
+            "https://www.youtube.com/watch?v=Ne6HOBiWT6g", // Standard 4:3
+            "https://www.youtube.com/watch?v=71a5rSUkN68", // Standard 4:3
+             
+            "https://www.youtube.com/watch?v=l75c_rIE0qo", // Standard 16:9
+            
+        ];
+
+        // 2. UPCOMING EVENTS LIST
+        const upcomingEvents = [
+             {
+                title: "[FILE-TLQ-14X]",
+                date: "DEC 2025",
+                // You can use a full image URL here, or leave null to use a placeholder based on title
+                imageUrl: null, 
+                link: "https://www.youtube.com/watch?v=0YDxmr8m-WQ&list=PL-4abj_hewi77I9HXW8kHtfad5BkfoRMC"
+            },
+            {
+                title: "QUANTUM REALM VARIANCE[FILE-TLQ-14X-MAIN]",
+                date: "DEC 2026",
+                imageUrl: null,
+                link: "https://www.youtube.com/watch?v=JOmuf8mkE2M&list=PL-4abj_hewi77I9HXW8kHtfad5BkfoRMC"
+            }
+        ];
+
+        // --- SYSTEM FUNCTIONS ---
+
+        // Helper: Updated to extract ID from standard AND shorts URLs
+        function getVideoId(url) {
+            const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const match = url.match(regExp);
+            return (match && match[1]) ? match[1] : null;
+        }
+
+        // Typing Effect for Hero Title
+        async function typeWriter(text, elementId, speed = 100) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            element.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                element.innerHTML += text.charAt(i);
+                await new Promise(resolve => setTimeout(resolve, speed));
+            }
+            // Add blinking cursor at the end
+            element.innerHTML += '<span class="animate-pulse">_</span>';
+        }
+
+        // Render Video Feed (Masonry)
+        function renderVideoFeed() {
+            const container = document.getElementById('video-feed');
+            if (!container) return;
+
+            // Clear loading state
+            container.innerHTML = '';
+
+            videoUrls.forEach((url, index) => {
+                const videoId = getVideoId(url);
+                if (!videoId) return;
+
+                // Try maxresdefault first (best for varying aspect ratios on Shorts), 
+                // fallback to sddefault (often 4:3 but better than nothing), then hqdefault.
+                const thumbnailHd = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+                const thumbnailSd = `https://i.ytimg.com/vi/${videoId}/sddefault.jpg`;
+
+                const item = document.createElement('div');
+                item.className = 'masonry-item group';
+                // Added a slight random delay for a "loading sequentially" retro feel
+                item.style.animation = `fadeIn 0.5s ease-in ${index * 0.2}s forwards`;
+                item.style.opacity = '0';
+
+                item.innerHTML = `
+                    <a href="${url}" target="_blank" class="block bg-tva-dark border-2 border-tva-brown hover:border-tva-orange transition-all duration-300 overflow-hidden relative">
+                        <!-- Tech overlay lines -->
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMCAwaDQwdjQwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNjg0NGIiIHN0cm9rZS1vcGFjaXR5PSIwLjIiLz48L3N2Zz4=')] z-10 transition-opacity pointer-events-none"></div>
+                        
+                        <div class="relative">
+                            <!-- 'block' added to remove inline spacing, w-full h-auto lets it find its own aspect ratio -->
+                            <img src="${thumbnailHd}" 
+                                 alt="Record ${videoId}" 
+                                 class="block w-full h-auto brightness-75 contrast-125 sepia-[.2] group-hover:sepia-0 group-hover:brightness-100 transition-all duration-500"
+                                 onerror="this.onerror=null; this.src='${thumbnailSd}'">
+                            
+                            <!-- Play icon overlay -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                                <div class="w-16 h-16 bg-tva-orange/80 rounded-full flex items-center justify-center pl-1 shadow-lg shadow-tva-orange/50">
+                                    <div class="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-tva-dark border-b-[12px] border-b-transparent"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border-t-2 border-tva-brown bg-gradient-to-b from-tva-dark to-black">
+                            <div class="text-xs text-tva-orange/70 mb-1 tracking-wider">[ ID: ${videoId} ]</div>
+                            <div class="text-tva-cream font-bold tracking-wide group-hover:text-tva-orange transition-colors">
+                                /// VIEW ARCHIVE
+                            </div>
+                        </div>
+                    </a>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Render Upcoming Events
+        function renderUpcoming() {
+            const container = document.getElementById('upcoming-feed');
+            if (!container) return;
+
+            upcomingEvents.forEach(event => {
+                const item = document.createElement('div');
+                item.innerHTML = `
+                    <a href="${event.link}" target="_blank" class="block bg-tva-dark border border-tva-gold/30 hover:border-tva-orange p-6 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="text-4xl opacity-50 group-hover:opacity-100 transition-opacity">📁</div>
+                            <div class="text-sm text-tva-orange border border-tva-orange px-2 py-1 rounded-sm">
+                                PENDING
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-tva-cream mb-2 group-hover:text-tva-orange transition-colors">
+                            ${event.title}
+                        </h3>
+                        <div class="text-tva-gold/60 text-sm tracking-wider">
+                            EXPECTED VARIANCE: ${event.date}
+                        </div>
+                    </a>
+                `;
+                container.appendChild(item.firstElementChild);
+            });
+        }
+
+        // --- INITIALIZATION ---
+        // Add simple CSS animation for fade in
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn { to { opacity: 1; } }
+        `;
+        document.head.appendChild(style);
+
+        // Boot sequence
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => typeWriter("Space Programme And Research Organization", "typing-title", 60), 500);
+            setTimeout(renderVideoFeed, 1000);
+            renderUpcoming();
+        });
+
+    </script>
+</body>
+</html>
