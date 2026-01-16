@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="icon.png"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARO TV - Entertainment Division</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #ff8c42;
+            --secondary-gold: #d4af37;
+            --dark-brown: #1a0f0a;
+            --deep-brown: #2d1810;
+            --mid-brown: #4a2c1a;
+            --cream: #f5e6d3;
+            --accent-teal: #4ecdc4;
+            --glow-orange: rgba(255, 140, 66, 0.6);
+            --shadow-deep: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Allow text selection in form inputs and textareas */
+        input,
+        textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(135deg, var(--dark-brown) 0%, var(--deep-brown) 50%, var(--mid-brown) 100%);
+            color: var(--cream);
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Touch device improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-link,
+            .nexus-btn,
+            .submit-btn,
+            .apply-btn {
+                -webkit-tap-highlight-color: rgba(255, 140, 66, 0.3);
+            }
+
+            .nav-link:active,
+            .submit-btn:active,
+            .apply-btn:active {
+                transform: scale(0.98);
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 140, 66, 0.03) 2px,
+                    rgba(255, 140, 66, 0.03) 4px
+                );
+            pointer-events: none;
+            z-index: 1;
+            animation: scanlines 8s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .container {
+            position: relative;
+            z-index: 3;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 15, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary-orange);
+            z-index: 1000;
+            box-shadow: 0 4px 20px var(--shadow-deep);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                position: fixed;
+                background: rgba(26, 15, 10, 0.98);
+            }
+            
+            nav {
+                min-height: auto;
+            }
+            
+            .logo-section {
+                flex: 1;
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            text-shadow: 0 0 20px var(--glow-orange), 0 0 40px var(--glow-orange);
+            letter-spacing: 4px;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 20px var(--glow-orange), 0 0 40px var(--glow-orange); }
+            50% { text-shadow: 0 0 30px var(--glow-orange), 0 0 60px var(--glow-orange), 0 0 80px var(--glow-orange); }
+        }
+
+        .tagline {
+            font-size: 0.75rem;
+            color: var(--secondary-gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .mobile-menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--primary-orange);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 80%;
+                max-width: 350px;
+                background: rgba(26, 15, 10, 0.98);
+                flex-direction: column;
+                padding: 100px 30px 30px;
+                gap: 20px;
+                transition: right 0.4s ease;
+                overflow-y: auto;
+                box-shadow: -5px 0 30px var(--shadow-deep);
+                border-left: 2px solid var(--primary-orange);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translateY(12px);
+            }
+
+            .mobile-menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translateY(-12px);
+            }
+        }
+
+        .nav-link {
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary-orange), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-orange);
+            border-color: var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        .nexus-btn {
+            background: linear-gradient(135deg, var(--accent-teal), #2a9d8f);
+            color: var(--dark-brown);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .nexus-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(78, 205, 196, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 120px;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--glow-orange) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.1; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            text-shadow: 0 0 30px var(--glow-orange);
+            margin-bottom: 20px;
+            animation: title-entrance 1.5s ease-out;
+        }
+
+        @keyframes title-entrance {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary-gold);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: var(--cream);
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .disclaimer {
+            display: inline-block;
+            background: rgba(255, 140, 66, 0.1);
+            border: 2px solid var(--primary-orange);
+            padding: 15px 30px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: var(--primary-orange);
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(255, 140, 66, 0.3);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            text-align: center;
+            margin-bottom: 60px;
+            text-shadow: 0 0 20px var(--glow-orange);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--secondary-gold), transparent);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .about-card {
+            background: rgba(45, 24, 16, 0.6);
+            border: 2px solid var(--primary-orange);
+            padding: 40px;
+            box-shadow: 0 8px 30px var(--shadow-deep);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 140, 66, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .about-card:hover::before {
+            left: 100%;
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(255, 140, 66, 0.4);
+        }
+
+        .about-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--secondary-gold);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .about-card p {
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            background: rgba(45, 24, 16, 0.8);
+            border: 2px solid var(--secondary-gold);
+            overflow: hidden;
+            box-shadow: 0 8px 30px var(--shadow-deep);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .project-card::after {
+            content: 'COMING SOON';
+            position: absolute;
+            top: 20px;
+            right: -80px;
+            background: var(--primary-orange);
+            color: var(--dark-brown);
+            padding: 8px 100px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transform: rotate(45deg);
+            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.6);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, var(--mid-brown), var(--deep-brown));
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 15, 10, 0.3), rgba(45, 24, 16, 0.3));
+            z-index: 1;
+        }
+        
+        .project-placeholder {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            color: var(--primary-orange);
+            opacity: 0.3;
+            z-index: 2;
+        }
+
+        .project-content {
+            padding: 30px;
+        }
+
+        .project-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--secondary-gold);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .project-content p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-orange);
+            font-weight: 700;
+        }
+
+        /* Watch Section */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .video-card {
+            background: rgba(45, 24, 16, 0.8);
+            border: 2px solid var(--accent-teal);
+            overflow: hidden;
+            box-shadow: 0 8px 30px var(--shadow-deep);
+            transition: all 0.4s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(78, 205, 196, 0.5);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .custom-subtitles {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: var(--cream);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            max-width: 80%;
+            display: none;
+            z-index: 1000;
+            border: 2px solid var(--primary-orange);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            pointer-events: none;
+        }
+
+        .custom-subtitles.show {
+            display: block;
+        }
+
+        .subtitle-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .subtitle-toggle-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--cream);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--cream);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .subtitle-toggle-btn:hover {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange);
+            color: var(--dark-brown);
+            transform: scale(1.05);
+        }
+
+        .subtitle-toggle-btn.active {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange);
+            color: var(--dark-brown);
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-teal);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .video-info p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Feedback Section */
+        .feedback-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(45, 24, 16, 0.8);
+            border: 3px solid var(--primary-orange);
+            padding: 50px;
+            box-shadow: 0 15px 50px var(--shadow-deep);
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--secondary-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: rgba(26, 15, 10, 0.6);
+            border: 2px solid var(--mid-brown);
+            color: var(--cream);
+            padding: 15px;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-group input,
+            .form-group textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 20px rgba(255, 140, 66, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-orange), #ff6b1a);
+            color: var(--dark-brown);
+            border: none;
+            padding: 18px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(255, 140, 66, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .submit-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(255, 140, 66, 0.7);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(26, 15, 10, 0.95);
+            border-top: 2px solid var(--primary-orange);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            text-shadow: 0 0 20px var(--glow-orange);
+            letter-spacing: 3px;
+        }
+
+        .footer-text {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--secondary-gold);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-orange);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            nav {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 20px;
+            }
+
+            .logo {
+                font-size: 1.6rem;
+            }
+
+            .tagline {
+                font-size: 0.55rem;
+                letter-spacing: 1.5px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                font-size: 0.85rem;
+                padding: 12px 15px;
+            }
+
+            .nexus-btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                margin-top: 100px;
+                padding: 30px 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+
+            .hero .subtitle {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            .hero .description {
+                font-size: 0.95rem;
+                padding: 0 10px;
+            }
+
+            .disclaimer {
+                font-size: 0.75rem;
+                padding: 12px 20px;
+                letter-spacing: 0.5px;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 40px;
+                letter-spacing: 1px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .about-card {
+                padding: 25px;
+            }
+
+            .about-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .project-card::after {
+                font-size: 0.7rem;
+                padding: 6px 80px;
+                top: 15px;
+                right: -70px;
+            }
+
+            .project-image {
+                height: 200px;
+            }
+            
+            .project-placeholder {
+                font-size: 3rem;
+            }
+
+            .project-content {
+                padding: 20px;
+            }
+
+            .project-content h3 {
+                font-size: 1.4rem;
+            }
+
+            .project-content p {
+                font-size: 0.9rem;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 10px;
+                font-size: 0.8rem;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .video-info {
+                padding: 20px;
+            }
+
+            .video-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .video-info p {
+                font-size: 0.9rem;
+            }
+
+            .feedback-container {
+                padding: 25px 20px;
+                border: 2px solid var(--primary-orange);
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .submit-btn {
+                padding: 15px 30px;
+                font-size: 0.95rem;
+                letter-spacing: 2px;
+            }
+
+            /* Join Us Section Mobile Styles */
+            .join-intro {
+                padding: 0 10px;
+            }
+
+            .join-description {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+
+            .join-warning {
+                padding: 20px 15px;
+                margin: 20px 10px;
+                font-size: 0.9rem;
+            }
+
+            .join-warning strong {
+                font-size: 1rem;
+            }
+
+            .join-warning li {
+                font-size: 0.85rem;
+                padding: 6px 0;
+                padding-left: 25px;
+            }
+
+            .compensation-notice {
+                padding: 20px 15px;
+                margin: 20px 10px;
+                font-size: 0.9rem;
+            }
+
+            .compensation-notice strong {
+                font-size: 1rem;
+            }
+
+            .compensation-notice p {
+                font-size: 0.85rem;
+            }
+
+            .positions-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin-top: 40px;
+            }
+
+            .position-card {
+                padding: 25px 20px;
+                border: 2px solid var(--secondary-gold);
+            }
+
+            .position-card::before {
+                height: 4px;
+            }
+
+            .position-header {
+                margin-bottom: 20px;
+            }
+
+            .position-title {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .position-subtitle {
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+            }
+
+            .requirements {
+                margin: 20px 0;
+            }
+
+            .requirements h4 {
+                font-size: 1.1rem;
+            }
+
+            .requirements li {
+                font-size: 0.85rem;
+                padding: 8px 0;
+                padding-left: 25px;
+            }
+
+            .application-form {
+                margin-top: 25px;
+                padding-top: 25px;
+            }
+
+            .form-section-title {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+                letter-spacing: 1px;
+            }
+
+            .file-upload-group {
+                margin: 15px 0;
+            }
+
+            .file-upload-label {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+            }
+
+            .file-input-wrapper {
+                padding: 20px 15px;
+            }
+
+            .file-upload-text {
+                font-size: 0.85rem;
+            }
+
+            .file-upload-hint {
+                font-size: 0.75rem;
+                margin-top: 8px;
+            }
+
+            .file-name-display {
+                font-size: 0.8rem;
+                margin-top: 8px;
+                word-break: break-word;
+            }
+
+            .apply-btn {
+                margin-top: 20px;
+            }
+
+            .footer-content {
+                padding: 0 20px;
+            }
+
+            .footer-logo {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+
+            .footer-text {
+                font-size: 0.8rem;
+                text-align: center;
+                padding: 0 10px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .footer-links a {
+                font-size: 0.85rem;
+            }
+
+            .success-message {
+                padding: 15px;
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .tagline {
+                font-size: 0.5rem;
+                letter-spacing: 1px;
+            }
+            
+            nav {
+                padding: 8px 15px;
+            }
+            
+            .hero {
+                margin-top: 85px;
+                padding: 25px 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+
+            .hero .description {
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .project-image {
+                height: 180px;
+            }
+            
+            .project-placeholder {
+                font-size: 2.5rem;
+            }
+
+            .position-title {
+                font-size: 1.3rem;
+            }
+
+            .about-card h3,
+            .project-content h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #2a9d8f, var(--accent-teal));
+            color: var(--dark-brown);
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 20px rgba(78, 205, 196, 0.6);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Join Us Section */
+        .join-intro {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            text-align: center;
+        }
+
+        .join-description {
+            font-size: 1.2rem;
+            line-height: 2;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .join-warning {
+            background: rgba(255, 140, 66, 0.15);
+            border: 2px solid var(--primary-orange);
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .join-warning strong {
+            color: var(--primary-orange);
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .join-warning ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .join-warning li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .join-warning li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-gold);
+            font-weight: 700;
+        }
+
+        .compensation-notice {
+            background: rgba(78, 205, 196, 0.1);
+            border: 2px solid var(--accent-teal);
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            text-align: center;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .compensation-notice strong {
+            color: var(--accent-teal);
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .positions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .position-card {
+            background: rgba(45, 24, 16, 0.8);
+            border: 3px solid var(--secondary-gold);
+            padding: 40px;
+            box-shadow: 0 10px 40px var(--shadow-deep);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .position-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-orange), var(--secondary-gold), var(--accent-teal));
+        }
+
+        .position-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
+        }
+
+        .position-header {
+            margin-bottom: 30px;
+        }
+
+        .position-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--secondary-gold);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .position-subtitle {
+            color: var(--primary-orange);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .requirements {
+            margin: 30px 0;
+        }
+
+        .requirements h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-teal);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirements li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .requirements li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--primary-orange);
+        }
+
+        .application-form {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid var(--mid-brown);
+        }
+
+        .form-section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-orange);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .file-upload-group {
+            margin: 20px 0;
+        }
+
+        .file-upload-label {
+            display: block;
+            color: var(--secondary-gold);
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            background: rgba(26, 15, 10, 0.6);
+            border: 2px dashed var(--mid-brown);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-wrapper:hover {
+            border-color: var(--primary-orange);
+            background: rgba(255, 140, 66, 0.05);
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-text {
+            color: var(--cream);
+            font-size: 0.95rem;
+        }
+
+        .file-upload-hint {
+            color: var(--primary-orange);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        .file-name-display {
+            margin-top: 10px;
+            color: var(--accent-teal);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .apply-btn {
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        /* Hidden Sections */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="grain-overlay"></div>
+    
+    <header>
+        <nav>
+            <div class="logo-section">
+                <div class="logo">SPARO TV</div>
+                <div class="tagline">Entertainment Division</div>
+            </div>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link" onclick="showSection('home'); closeMobileMenu()">Home</a>
+                <a href="#upcoming" class="nav-link" onclick="showSection('upcoming'); closeMobileMenu()">Upcoming Projects</a>
+                <a href="#watch" class="nav-link" onclick="showSection('watch'); closeMobileMenu()">Watch Now</a>
+                <a href="#feedback" class="nav-link" onclick="showSection('feedback'); closeMobileMenu()">Feedback</a>
+                <a href="#join" class="nav-link" onclick="showSection('join'); closeMobileMenu()">Join Us</a>
+                <button class="nexus-btn" onclick="window.open('https://nexus-animation-sparo.netlify.app/', '_blank'); closeMobileMenu()">
+                    NEXUS ANIMATION →
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>SPARO TV</h1>
+                <div class="subtitle">SPACE PROGRAMME AND RESEARCH ORGANIZATION</div>
+                <p class="description">
+                    Welcome to the Entertainment Division of SPARO. We bring you cutting-edge content 
+                    that explores the cosmos, pushes the boundaries of storytelling, and ventures into 
+                    the unknown reaches of imagination.
+                </p>
+                <div class="disclaimer">
+                    ⚠ THIS IS THE SPARO TV ENTERTAINMENT DIVISION • NOT THE MAIN SPARO WEBSITE ⚠
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title">About SPARO TV</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Our Mission</h3>
+                    <p>
+                        SPARO TV serves as the creative arm of the Space Programme and Research Organization, 
+                        delivering entertainment that educates, inspires, and captivates audiences about 
+                        space exploration and scientific discovery.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h3>NEXUS Animation</h3>
+                    <p>
+                        Our subsidiary animation studio, NEXUS Animation, creates stunning visual narratives 
+                        that bring space concepts to life through cutting-edge animation techniques and 
+                        artistic excellence.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h3>Content Philosophy</h3>
+                    <p>
+                        We blend scientific accuracy with compelling storytelling, ensuring every piece of 
+                        content educates while entertaining, making complex space concepts accessible to all.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+                <section id="upcoming" class="hidden">
+            <h2 class="section-title">Upcoming Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image" style="background-image: url('images/tlq.png');">
+                        <span class="project-placeholder">TLQ</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>The Last Question</h3>
+                        <p>
+                             An animated loosely inspired by Isaac Asimov’s timeless masterpiece.
+                        </p>
+                        <div class="project-meta">
+                            <span>📅 2027</span>
+                            <span>🎬 Feature Film</span>
+                            <span>In Development</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image" style="background-image: url('images/nexus.png');">
+                        <span class="project-placeholder">Nexus-Point</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Nexus-Point: Event Horizon</h3>
+                        <p>
+                            NEXUS Animation's flagship project
+                        </p>
+                        <div class="project-meta">
+                            <span>📅 2028</span>
+                            <span>🎬 Feature Film</span>
+                            <span>In Pre-Production</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image" style="background-image: url('images/nexus.png');">
+                        <span class="project-placeholder">Nexus-Point</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Nexus-Point: Part 2</h3>
+                        <p>
+                            NEXUS Animation's flagship project
+                        </p>
+                        <div class="project-meta">
+                            <span>📅 2030</span>
+                            <span>🎬 Feature Film</span>
+                            <span>In Pre-Production</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image" style="background-image: url('images/idk.png');">
+                        <span class="project-placeholder">???</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Project:?</h3>
+                        <p>
+                            You will Enjoy. 
+                        </p>
+                        <div class="project-meta">
+                            <span>📅 ?</span>
+                            <span>?</span>
+                            <span>In Ideation Process</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image" style="background-image: url('images/idk.png');">
+                        <span class="project-placeholder">ZOMZEN</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Project: ZOMZEN</h3>
+                        <p>
+                            flagship project
+                        </p>
+                        <div class="project-meta">
+                            <span>📅 ?</span>
+                            <span>🎬 Feature Film</span>
+                            <span>In Ideation Process</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </section>
+
+        <section id="watch" class="hidden">
+            <h2 class="section-title">Watch Now</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-container" id="video-container-1">
+                        <iframe 
+                            id="youtube-player-1"
+                            src="https://www.youtube.com/embed/YYNGt1tx8p4?enablejsapi=1&cc_load_policy=1&cc_lang_pref=en" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                        <div class="subtitle-controls">
+                            <button class="subtitle-toggle-btn active" id="subtitle-toggle-1" title="Toggle Subtitles">CC</button>
+                        </div>
+                        <div class="custom-subtitles" id="subtitles-1"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Module 3 [RESTORED]</h3>
+                        <p>SPARO ARCHIVE VOL.1</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-container" id="video-container-2">
+                        <iframe 
+                            id="youtube-player-2"
+                            src="https://www.youtube.com/embed/Ne6HOBiWT6g?enablejsapi=1&cc_load_policy=1&cc_lang_pref=en" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                        <div class="subtitle-controls">
+                            <button class="subtitle-toggle-btn active" id="subtitle-toggle-2" title="Toggle Subtitles">CC</button>
+                        </div>
+                        <div class="custom-subtitles" id="subtitles-2"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Module 2 [RESTORED]</h3>
+                        <p>SPARO ARCHIVE VOL.1</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-container" id="video-container-3">
+                        <iframe 
+                            id="youtube-player-3"
+                            src="https://www.youtube.com/embed/71a5rSUkN68?enablejsapi=1&cc_load_policy=1&cc_lang_pref=en" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                        <div class="subtitle-controls">
+                            <button class="subtitle-toggle-btn active" id="subtitle-toggle-3" title="Toggle Subtitles">CC</button>
+                        </div>
+                        <div class="custom-subtitles" id="subtitles-3"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Module 2 [RESTORED]</h3>
+                        <p>SPARO ARCHIVE VOL.1</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        </section>
+
+        <section id="join" class="hidden">
+            <h2 class="section-title">Join Our Team</h2>
+            
+            <div class="join-intro">
+                <p class="join-description">
+                    SPARO TV is seeking passionate sci-fi enthusiasts to join our creative team. 
+                    We're building the future of space entertainment and animation, and we want 
+                    visionaries who share our love for the cosmos and compelling storytelling.
+                </p>
+            </div>
+
+            <div class="join-warning">
+                <strong>⚠ CRITICAL REQUIREMENTS ⚠</strong>
+                <ul>
+                    <li>Must be a passionate <strong style="color: var(--primary-orange);">SCI-FI ENTHUSIAST</strong></li>
+                    <li><strong style="color: var(--primary-orange);">NO AI-GENERATED CONTENT</strong> will be accepted</li>
+                    <li>All work must be 100% original and human-created</li>
+                    <li>Portfolio must demonstrate genuine artistic skill and creativity</li>
+                </ul>
+            </div>
+
+            <div class="compensation-notice">
+                <strong>💎 COMPENSATION & BENEFITS 💎</strong>
+                <p>
+                    Currently, SPARO TV operates on a <strong>credit-based collaboration model</strong>. 
+                    We do not offer monetary compensation at this time. However, all contributors receive:
+                </p>
+                <p style="margin-top: 15px;">
+                    ✦ <strong>Proper credits</strong> in all productions<br>
+                    ✦ <strong>Internal project insights</strong> and creative input<br>
+                    ✦ <strong>Portfolio-building opportunities</strong> with high-quality productions<br>
+                    ✦ <strong>Experience</strong> working on professional sci-fi content
+                </p>
+            </div>
+
+            <div class="positions-grid">
+                <div class="position-card">
+                    <div class="position-header">
+                        <h3 class="position-title">3D Modeling Artist</h3>
+                        <p class="position-subtitle">Blender Specialist</p>
+                    </div>
+
+                    <div class="requirements">
+                        <h4>Requirements:</h4>
+                        <ul>
+                            <li>Expert proficiency in Blender</li>
+                            <li>Strong portfolio of sci-fi themed work</li>
+                            <li>Experience with hard-surface modeling (spacecraft, technology)</li>
+                            <li>Understanding of PBR materials and texturing</li>
+                            <li>Passion for space and science fiction</li>
+                            <li>NO AI-generated models or textures</li>
+                        </ul>
+                    </div>
+
+                    <div class="application-form">
+                        <h4 class="form-section-title">Apply Now</h4>
+                        <form action="https://formsubmit.co/nexus.animation14@gmail.com" method="POST" enctype="multipart/form-data" class="feedback-form" id="modelingForm">
+                            <input type="hidden" name="_subject" value="New Application: 3D Modeling Artist">
+                            
+                            <div class="form-group">
+                                <label for="modeling-name">Full Name</label>
+                                <input type="text" id="modeling-name" name="name" required placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="modeling-age">Age</label>
+                                <input type="number" id="modeling-age" name="age" required placeholder="Enter your age" min="16" max="99">
+                            </div>
+                            <div class="form-group">
+                                <label for="modeling-email">Email</label>
+                                <input type="email" id="modeling-email" name="email" required placeholder="Enter your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="modeling-experience">Years of Blender Experience</label>
+                                <input type="text" id="modeling-experience" name="experience" required placeholder="e.g., 3 years">
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label class="file-upload-label">Portfolio Images (PNG/JPG)</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="modeling-images" name="images" accept=".png,.jpg,.jpeg" multiple required>
+                                    <div class="file-upload-text">
+                                        📸 Click to upload portfolio images<br>
+                                        <span class="file-upload-hint">Accept: PNG, JPG (Multiple files allowed)</span>
+                                    </div>
+                                    <div class="file-name-display" id="modeling-images-display"></div>
+                                </div>
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label class="file-upload-label">Blender Project File (.blend)</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="modeling-blend" name="blend" accept=".blend" required>
+                                    <div class="file-upload-text">
+                                        🎨 Click to upload google drive .blend file link<br>
+                                        <span class="file-upload-hint">Accept: .blend files only(drive link)</span>
+                                    </div>
+                                    <div class="file-name-display" id="modeling-blend-display"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modeling-portfolio-link">Portfolio Link (Optional)</label>
+                                <input type="url" id="modeling-portfolio-link" name="portfolio" placeholder="ArtStation, Behance, or personal website">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modeling-scifi">Why are you passionate about sci-fi?</label>
+                                <textarea id="modeling-scifi" name="scifi-passion" required placeholder="Tell us about your love for science fiction and space..."></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-btn apply-btn">Submit Application</button>
+                        </form>
+                        <div id="modelingSuccess" class="success-message">
+                            ✓ APPLICATION TRANSMITTED
+                        </div>
+                    </div>
+                </div>
+
+                <div class="position-card">
+                    <div class="position-header">
+                        <h3 class="position-title">Screenplay Writer</h3>
+                        <p class="position-subtitle">Sci-Fi Storyteller</p>
+                    </div>
+
+                    <div class="requirements">
+                        <h4>Requirements:</h4>
+                        <ul>
+                            <li>Strong portfolio of original screenplays</li>
+                            <li>Deep understanding of sci-fi genre conventions</li>
+                            <li>Experience writing for visual media</li>
+                            <li>Knowledge of screenplay formatting standards</li>
+                            <li>Passion for space exploration and scientific accuracy</li>
+                            <li>NO AI-generated scripts or content</li>
+                        </ul>
+                    </div>
+
+                    <div class="application-form">
+                        <h4 class="form-section-title">Apply Now</h4>
+                        <form action="https://formsubmit.co/nexus.animation14@gmail.com" method="POST" enctype="multipart/form-data" class="feedback-form" id="writerForm">
+                            <input type="hidden" name="_subject" value="New Application: Screenplay Writer">
+
+                            <div class="form-group">
+                                <label for="writer-name">Full Name</label>
+                                <input type="text" id="writer-name" name="name" required placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="writer-age">Age</label>
+                                <input type="number" id="writer-age" name="age" required placeholder="Enter your age" min="16" max="99">
+                            </div>
+                            <div class="form-group">
+                                <label for="writer-email">Email</label>
+                                <input type="email" id="writer-email" name="email" required placeholder="Enter your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="writer-experience">Years of Writing Experience</label>
+                                <input type="text" id="writer-experience" name="experience" required placeholder="e.g., 5 years">
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label class="file-upload-label">Writing Sample (.txt)</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="writer-sample" name="sample" accept=".txt" required>
+                                    <div class="file-upload-text">
+                                        📝 Click to upload screenplay sample<br>
+                                        <span class="file-upload-hint">Accept: .txt files only (Screenplay format)</span>
+                                    </div>
+                                    <div class="file-name-display" id="writer-sample-display"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="writer-portfolio-link">Writing Portfolio Link (Optional)</label>
+                                <input type="url" id="writer-portfolio-link" name="portfolio" placeholder="Blog, Medium, or personal website">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="writer-favorite">Favorite Sci-Fi Work & Why</label>
+                                <textarea id="writer-favorite" name="favorite-scifi" required placeholder="Tell us about your favorite sci-fi movie/show/book and what makes it special..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="writer-scifi">Why are you passionate about sci-fi storytelling?</label>
+                                <textarea id="writer-scifi" name="scifi-passion" required placeholder="Share your vision and passion for science fiction narratives..."></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-btn apply-btn">Submit Application</button>
+                        </form>
+                        <div id="writerSuccess" class="success-message">
+                            ✓ APPLICATION TRANSMITTED
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="feedback" class="hidden">
+            <h2 class="section-title">Send Us Feedback</h2>
+            <div class="feedback-container">
+                <form action="https://formsubmit.co/nexus.animation14@gmail.com" method="POST" class="feedback-form" id="feedbackForm">
+                    <input type="hidden" name="_subject" value="SPARO TV Viewer Feedback">
+                    
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required placeholder="What is this about?">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="Share your thoughts, suggestions, or feedback..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Feedback</button>
+                </form>
+                <div id="feedbackSuccess" class="success-message">
+                    ✓ FEEDBACK TRANSMITTED SUCCESSFULLY
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">SPARO TV</div>
+            <div class="footer-text">
+                Entertainment Division | Space Programme and Research Organization
+            </div>
+            <div class="footer-text">
+                © 2026 SPARO TV. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#home" onclick="showSection('home')">Home</a>
+                <a href="#upcoming" onclick="showSection('upcoming')">Projects</a>
+                <a href="#watch" onclick="showSection('watch')">Watch</a>
+                <a href="#join" onclick="showSection('join')">Join Us</a>
+                <a href="#feedback" onclick="showSection('feedback')">Feedback</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const isClickInside = navLinks.contains(event.target) || menuToggle.contains(event.target);
+            
+            if (!isClickInside && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Navigation functionality
+        function showSection(sectionName) {
+            // Hide all sections except home and about
+            const sections = ['upcoming', 'watch', 'feedback', 'join'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (section === sectionName) {
+                    element.classList.remove('hidden');
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    element.classList.add('hidden');
+                }
+            });
+
+            // Show home and about sections when home is clicked
+            if (sectionName === 'home') {
+                document.getElementById('home').classList.remove('hidden');
+                document.getElementById('about').classList.remove('hidden');
+                document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Hide about section when viewing other sections
+                document.getElementById('about').classList.add('hidden');
+            }
+        }
+
+        // --- UPDATED: ADVANCED FORM HANDLER (PREVENTS REDIRECT) ---
+        async function handleAjaxSubmit(event, formId, successMessageId) {
+            event.preventDefault(); // Prevents the redirect to formsubmit.co
+            
+            const form = document.getElementById(formId);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
+
+            // 1. Show loading state
+            submitBtn.innerText = "TRANSMITTING...";
+            submitBtn.style.opacity = "0.7";
+            submitBtn.disabled = true;
+
+            // 2. Prepare data (including files)
+            const formData = new FormData(form);
+            
+            // 3. Send to FormSubmit in the background
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json' // Tells FormSubmit we want JSON, not a redirect page
+                    }
+                });
+
+                if (response.ok) {
+                    // 4. Success: Show Popup & Reset
+                    form.reset();
+                    
+                    // Clear file displays
+                    const fileDisplays = form.querySelectorAll('.file-name-display');
+                    fileDisplays.forEach(el => el.textContent = '');
+
+                    // Show Success Message
+                    const successMsg = document.getElementById(successMessageId);
+                    if (successMsg) {
+                        successMsg.classList.add('show');
+                        // Hide after 5 seconds
+                        setTimeout(() => {
+                            successMsg.classList.remove('show');
+                        }, 5000);
+                    } else {
+                        alert("✓ TRANSMISSION SUCCESSFUL");
+                    }
+                } else {
+                    alert("⚠ Transmission Failed. Please check your internet connection.");
+                }
+            } catch (error) {
+                alert("⚠ Error: " + error.message);
+            } finally {
+                // 5. Restore Button
+                submitBtn.innerText = originalBtnText;
+                submitBtn.style.opacity = "1";
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Attach this new handler to your forms
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            handleAjaxSubmit(e, 'feedbackForm', 'feedbackSuccess');
+        });
+
+        document.getElementById('modelingForm').addEventListener('submit', function(e) {
+            handleAjaxSubmit(e, 'modelingForm', 'modelingSuccess');
+        });
+
+        document.getElementById('writerForm').addEventListener('submit', function(e) {
+            handleAjaxSubmit(e, 'writerForm', 'writerSuccess');
+        });
+
+
+        // File input display handlers
+        function setupFileDisplay(inputId, displayId) {
+            const input = document.getElementById(inputId);
+            const display = document.getElementById(displayId);
+            
+            if (input && display) {
+                input.addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) {
+                        if (e.target.multiple) {
+                            display.textContent = `✓ ${e.target.files.length} file(s) selected: ${Array.from(e.target.files).map(f => f.name).join(', ')}`;
+                        } else {
+                            display.textContent = `✓ ${e.target.files[0].name}`;
+                        }
+                    } else {
+                        display.textContent = '';
+                    }
+                });
+            }
+        }
+
+        // Setup file displays
+        setupFileDisplay('modeling-images', 'modeling-images-display');
+        setupFileDisplay('modeling-blend', 'modeling-blend-display');
+        setupFileDisplay('writer-sample', 'writer-sample-display');
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                showSection(targetId);
+            });
+        });
+
+        // Initialize - show home section
+        window.addEventListener('load', () => {
+            showSection('home');
+            initializeYouTubeSubtitles();
+        });
+
+        // YouTube Subtitle Toggle
+        function initializeYouTubeSubtitles() {
+            const videoCount = 4;
+            
+            for (let i = 1; i <= videoCount; i++) {
+                const subtitleToggle = document.getElementById(`subtitle-toggle-${i}`);
+                const iframe = document.getElementById(`Youtubeer-${i}`);
+                
+                subtitleToggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    // Get current iframe src
+                    let src = iframe.src;
+                    
+                    if (this.classList.contains('active')) {
+                        // Enable captions
+                        if (src.indexOf('cc_load_policy=1') === -1) {
+                            // Add caption parameters if not present
+                            if (src.indexOf('?') === -1) {
+                                src += '?cc_load_policy=1&cc_lang_pref=en';
+                            } else {
+                                src += '&cc_load_policy=1&cc_lang_pref=en';
+                            }
+                        }
+                        // Force enable by reloading with parameter
+                        src = src.replace('cc_load_policy=0', 'cc_load_policy=1');
+                    } else {
+                        // Disable captions
+                        src = src.replace('cc_load_policy=1', 'cc_load_policy=0');
+                    }
+                    
+                    iframe.src = src;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
